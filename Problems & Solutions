@@ -1,0 +1,17 @@
+Installation process for first react-native app
+https://firebase.googleblog.com/2016/01/the-beginners-guide-to-react-native-and_84.html
+
+Problems encountered.
+Error: Cannot download some jar
+		In case if openjdk 9 is used, replace with opejdk 8
+Error: You should accept the license
+		
+
+
+
+Problem with android alert prompt:
+https://www.npmjs.com/package/react-native-prompt-android
+
+
+Learning:
+Only one text box in alert prompt is possible
