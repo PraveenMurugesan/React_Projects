@@ -1,0 +1,15 @@
+Errors & Fixes
+
+ScrollView Bug
+If the scrollview is bouncing then the parent of the scrollview must be added with style flex =1
+Eg: 
+In the albums project.
+Scrollview is in the ListView Component.
+The parent of ListView is View in the index.android.js. So the style of that VIEW has flex: 1 
+
+This is one of the minor bugs in react-native. I couldn't see this problem in my implementation. But may help wherever necessary
+
+Any doubts: Refer Video 47. https://www.udemy.com/the-complete-react-native-and-redux-course/learn/v4/t/lecture/5744070?start=0
+
+Learning:
+TouchableOpacity is used with TouchableHighlight

@@ -12,6 +12,13 @@ Error: You should accept the license
 Problem with android alert prompt:
 https://www.npmjs.com/package/react-native-prompt-android
 
+Transform Error: 
+ENOENT
+Caused due to changing the directory
+Solution: run following command
+ ./node_modules/react-native/packager/packager.sh start --reset-cache
+
+
 
 Learning:
 Only one text box in alert prompt is possible

@@ -1,0 +1,8 @@
+To use eslint for a project,
+1. run command npm install --save-dev eslint-config-rallycoding on the root of the project
+
+2. create .eslintrc file in the root of the project with contents
+
+{
+	"extends": "rallycoding"
+}

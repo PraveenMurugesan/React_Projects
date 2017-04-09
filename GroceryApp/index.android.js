@@ -11,7 +11,8 @@ import {
   Text,
   View,
   ListView,
-  Alert
+  Alert,
+  TextInput
 } from 'react-native';
 import * as firebase from 'firebase';
 import prompt from 'react-native-prompt-android';
@@ -19,6 +20,7 @@ import prompt from 'react-native-prompt-android';
 const StatusBar = require('./components/StatusBar');
 const ActionButton = require('./components/ActionButton');
 const ListItem = require('./components/ListItem');
+const CTextInput = require('./components/CTextInput');
 
 const styles = require('./styles.js');
 
@@ -39,7 +41,8 @@ export default class GroceryApp extends Component {
   this.state = {
     dataSource: new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
-    })
+    }),
+    searchText: ''
   };
   this.itemsRef = firebaseApp.database().ref('items');
   this.populateItems('items');
@@ -59,8 +62,8 @@ setItem(item,collectionName)
 
 
 populateItems(collectionName) {
-  this.setItem({ title:'Coconuts-Box', rate:240, image:'/media/praveen/C/Nature Bowl/ReactNativeApps/GroceryApp/images/tender_coconut.png' },collectionName);
-  this.setItem({ title:'Kalkandu', rate:20, image:'/media/praveen/C/Nature Bowl/ReactNativeApps/GroceryApp/images/tender_coconut.png' },collectionName);
+  this.setItem({ title:'Coconuts-Box', rate:240, image:'/media/praveen/C/Nature_Bowl/ReactNativeApps/GroceryApp/images/tender_coconut.jpg' },collectionName);
+  this.setItem({ title:'Kalkandu', rate:20, image:'/media/praveen/C/Nature_Bowl/ReactNativeApps/GroceryApp/images/tender_coconut.jpg' },collectionName);
 }
 
 
@@ -81,15 +84,15 @@ _addItem() {
   }
 
 
-
+items = [];
 listenForItems(itemsRef) {
   itemsRef.on('value', (snap) => {
 
     // get children as an array
-    var items = [];
+    
     snap.forEach((child) => {
       //var val = child.val();
-      items.push({
+        this.items.push({
         image: child.val().image,
         title: child.val().title,
         rate: child.val().rate,
@@ -98,7 +101,7 @@ listenForItems(itemsRef) {
     });
     //console.log(items.length);
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(items)
+      dataSource: this.state.dataSource.cloneWithRows(this.items)
     });
 
   });
@@ -123,12 +126,45 @@ listenForItems(itemsRef) {
     );
   }
 
+  _filterResults(textBox) {
+
+    const searchString = this.state.searchText;
+    var items = this.items;
+    if(searchString != "") {
+        
+        var tempItems = [];
+        for (var i = 0; i < items.length; i++) {
+          const item = items[i];
+          var title  = item.title;
+          if (title.toLowerCase().indexOf(searchString) > -1)
+          { 
+              tempItems.push(item);
+          }
+          this.setState({ dataSource: this.state.dataSource.cloneWithRows(tempItems) });
+        }
+    }
+    else {
+         this.setState({ dataSource: this.state.dataSource.cloneWithRows(items) });
+         //this.setState({ dataSource: null });
+    }
+    
+    
+    
+  }
+
   render() {
     
     return (
       <View style={styles.container}>
 
         <StatusBar title="Grocery List"/>
+
+        <TextInput
+        onSubmitEditing={this._filterResults.bind(this)}
+        style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+        onChangeText={(text) => this.setState({searchText: text})}
+        value={this.state.searchText}
+      />
 
         <ListView dataSource={this.state.dataSource} renderRow={this._renderItem.bind(this)} style={styles.listview}/>
 
