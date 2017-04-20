@@ -1,0 +1,34 @@
+//const reducer = () => []; //Anonymous  funtion that returns an empty array
+
+const reducer = (state = [],action) => { //State always contains the most recent state of the app
+	if(action.type === 'split_string') {
+    return action.payload.split('');
+  }
+  else if(action.type === 'add_character') {
+   // state.push(action.payload); // It is not a good practise to mutate the existing state rather a new state needs to be created
+   // return state;
+    
+    return [ ...state, action.payload ];
+  }
+  return state;
+}
+
+
+const store = Redux.createStore(reducer); //This function should always take a reduxer as input parameter
+
+store.getState();
+
+const action = {
+  type: 'split_string',
+  payload: 'asdf'
+};
+store.dispatch(action); // This dispatch function dispatches the action toall the reducers inside the store
+store.getState();
+
+const action2 = {
+  type: 'add_character',
+  payload: 'a'
+};
+
+store.dispatch(action2);
+store.getState();
